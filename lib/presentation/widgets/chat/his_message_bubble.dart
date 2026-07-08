@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HisMessageBubble extends StatelessWidget {
-  const HisMessageBubble({super.key});
+  final String text;
+
+  const HisMessageBubble({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class HisMessageBubble extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text('Hi', style: TextStyle(color: Colors.white)),
+            child: Text(text, style: TextStyle(color: Colors.white)),
           ),
         ),
         const SizedBox(height: 5),
@@ -42,7 +44,12 @@ class _ImageBubble extends StatelessWidget {
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return Container(width: size.width * 0.7, height: 150, padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5), child: Text('Enviando mensaje bb'),);
+          return Container(
+            width: size.width * 0.7,
+            height: 150,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text('Enviando mensaje bb'),
+          );
         },
       ),
     );
