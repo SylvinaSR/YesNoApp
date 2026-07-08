@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yes_no_app/config/helpers/get_yes_no_answer.dart';
 import 'package:yes_no_app/domain/entities/message.dart';
 
 /// ChangeNotifier es una clase nativa de la librería base que sirve para gestionar el estado de tu aplicación.
@@ -7,6 +8,7 @@ import 'package:yes_no_app/domain/entities/message.dart';
 
 class ChatProvider extends ChangeNotifier {
   final ScrollController chatScrollController = ScrollController();
+  final GetYesNoAnswer getYesNoAnswer = GetYesNoAnswer();
 
   List<Message> messageList = [
     Message(text: 'Hola amor', fromWho: FromWho.mine),
@@ -18,8 +20,15 @@ class ChatProvider extends ChangeNotifier {
     if (text.isEmpty) return;
     final newMessage = Message(text: text, fromWho: FromWho.mine);
     messageList.add(newMessage);
+    if (text.endsWith('?')) {
+      hisReply();
+    }
     notifyListeners(); //Es similar a setState(() {}) (redibujar), basicamente es algo cambio, notifica
     moveScrollToBottom();
+  }
+
+  Future<void> hisReply() async {
+    final hisMessage = await getYesNoAnswer.getAnswer();
   }
 
   Future<void> moveScrollToBottom() async {
