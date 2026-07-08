@@ -6,6 +6,8 @@ import 'package:yes_no_app/domain/entities/message.dart';
 /// almacena datos y avisa automáticamente a los widgets (pantallas) que estén escuchando para que se reconstruyan cada vez que esos datos cambian
 
 class ChatProvider extends ChangeNotifier {
+  final ScrollController chatScrollController = ScrollController();
+
   List<Message> messageList = [
     Message(text: 'Hola amor', fromWho: FromWho.mine),
     Message(text: 'Regresando del trabajo', fromWho: FromWho.mine),
@@ -13,9 +15,19 @@ class ChatProvider extends ChangeNotifier {
   ];
 
   Future<void> sendMessage(String text) async {
-    //Implementation
+    if (text.isEmpty) return;
     final newMessage = Message(text: text, fromWho: FromWho.mine);
     messageList.add(newMessage);
     notifyListeners(); //Es similar a setState(() {}) (redibujar), basicamente es algo cambio, notifica
+    moveScrollToBottom();
+  }
+
+  Future<void> moveScrollToBottom() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    chatScrollController.animateTo(
+      chatScrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 }
