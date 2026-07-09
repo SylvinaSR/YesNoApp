@@ -13,7 +13,6 @@ class ChatProvider extends ChangeNotifier {
   List<Message> messageList = [
     Message(text: 'Hola amor', fromWho: FromWho.mine),
     Message(text: 'Regresando del trabajo', fromWho: FromWho.mine),
-    Message(text: 'Hi', fromWho: FromWho.his),
   ];
 
   Future<void> sendMessage(String text) async {
@@ -29,6 +28,9 @@ class ChatProvider extends ChangeNotifier {
 
   Future<void> hisReply() async {
     final hisMessage = await getYesNoAnswer.getAnswer();
+    messageList.add(hisMessage);
+    notifyListeners();
+    moveScrollToBottom();
   }
 
   Future<void> moveScrollToBottom() async {
